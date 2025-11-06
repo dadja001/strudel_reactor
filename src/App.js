@@ -7,8 +7,9 @@ import { initAudioOnFirstClick, getAudioContext, webaudioOutput, registerSynthSo
 import { transpiler } from '@strudel/transpiler';
 import { registerSoundfonts } from '@strudel/soundfonts';
 import { stranger_tune } from './tunes';
-import console_monkey_patch, { getD3Data } from './console-monkey-patch';
+import console_monkey_patch from './console-monkey-patch';
 
+import { processSongText } from "./utils/preprocess";
 import PreprocessTextArea from './components/PreprocessTextArea';
 import ProcessButtons from './components/ProcessButtons';
 import PlayButtonsGroup from './components/PlayButtonsGroup';
@@ -62,63 +63,26 @@ export default function StrudelDemo() {
         }));
     }, []);
 
-    // Function to process the input text so it works on the strudel REPL
-    const processSongText = useCallback(() => {
-        let processed = songText;
-
-        // Replace instrument placeholders
-        for (const [instrument, isChecked] of Object.entries(checkedInstruments)) {
-            const placeholder = `&${instrument.toUpperCase()}&`;
-            const replacement = isChecked ? "" : "_"; // unchecked = "_", checked = ""
-            processed = processed.replaceAll(placeholder, replacement);
-        }
-
-        // Replace CPS
-        if (processed.includes("&CPS&")) {
-            processed = processed.replaceAll("&CPS&", CPS);
-        }
-
-        // Replace Pattern
-        if (processed.includes("&PATTERN_INDEX&")) {
-            processed = processed.replaceAll("&PATTERN_INDEX&", patternIndex);
-        }
-
-        // Replace Bass
-        if (processed.includes("&BASS_INDEX&")) {
-            processed = processed.replaceAll("&BASS_INDEX&", bassIndex);
-        }
-
-        // Replace Arpeggiator
-        if (processed.includes("&ARP_PLAYED&")) {
-            processed = processed.replaceAll("&ARP_PLAYED&", arpeggiator);
-        }
-
-        // Multiply gain_patterns numbers
-        processed = processed.replace(
-            /const\s+gain_patterns\s*=\s*\[([\s\S]*?)\]/,
-            (match, content) => {
-                const newContent = content.replace(/[\d.]+/g, num => {
-                    return parseFloat(num) * volumeMultiplier;
-                });
-                return `const gain_patterns = [${newContent}]`;
-            }
+    // Function to run the preprocessing function
+    const runPreprocessing = useCallback(() => {
+        return processSongText(
+            songText,
+            checkedInstruments,
+            CPS,
+            volumeMultiplier,
+            patternIndex,
+            bassIndex,
+            arpeggiator
         );
-
-        // Multiply hardcoded .gain(NUM)
-        processed = processed.replace(/\.gain\(([\d.]+)\)/g, (match, num) => {
-            return match.includes("pick(gain_patterns") ? match : `.gain(${parseFloat(num) * volumeMultiplier})`;
-        });
-
-        return processed;
     }, [songText, checkedInstruments, CPS, volumeMultiplier, patternIndex, bassIndex, arpeggiator]);
 
     // Function to set the REPL to the processed track
     const handleProcess = useCallback(() => {
         if (globalEditor) {
-            const processedText = processSongText();
+            const processedText = runPreprocessing();
             globalEditor.setCode(processedText);
         }
-    }, [processSongText]);
+    }, [runPreprocessing]);
 
     // Function that preprocesses and plays after using only a single buttton
     const processAndPlay = useCallback(() => {
