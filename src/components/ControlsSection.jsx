@@ -55,8 +55,8 @@ function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPat
                     <button type="button" className="btn btn-outline-warning" onClick={reset}>Reset to Default</button>
                 </div>
                 <div className="d-flex justify-content-between">
-                    <p className="text-muted small">Default: {initialCPS.current}</p>
                     <p className="text-muted small">Current Set Value: {CPS}</p>
+                    <p className="text-muted small">Default: {initialCPS.current}</p>
                 </div>
             </div>
 
