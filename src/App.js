@@ -24,6 +24,7 @@ const handleD3Data = (event) => {
 export default function StrudelDemo() {
     const hasRun = useRef(false);
 
+    // Initial/default values
     const initialCPS = 140
     const initialPatternIndex = 0
     const initialBassIndex = 0
@@ -43,15 +44,17 @@ export default function StrudelDemo() {
     const [bassIndex, setBassIndex] = useState(initialBassIndex);
     const [arpeggiator, setArpeggiator] = useState(initialArpeggiator);
 
-    // Handlers
+    // Starts the REPL
     const handlePlay = useCallback(() => {
         if (globalEditor) globalEditor.evaluate();
     }, []);
 
+    // Stops the REPL
     const handleStop = useCallback(() => {
         if (globalEditor) globalEditor.stop();
     }, []);
 
+    // Save instruments enabled boolean 
     const handleInstrumentChange = useCallback((instrument, checked) => {
         setCheckedInstruments(prev => ({
             ...prev,
@@ -59,6 +62,7 @@ export default function StrudelDemo() {
         }));
     }, []);
 
+    // Function to process the input text so it works on the strudel REPL
     const processSongText = useCallback(() => {
         let processed = songText;
 
@@ -74,17 +78,17 @@ export default function StrudelDemo() {
             processed = processed.replaceAll("&CPS&", CPS);
         }
 
-        //Replace Pattern
+        // Replace Pattern
         if (processed.includes("&PATTERN_INDEX&")) {
             processed = processed.replaceAll("&PATTERN_INDEX&", patternIndex);
         }
 
-        //Replace Bass
+        // Replace Bass
         if (processed.includes("&BASS_INDEX&")) {
             processed = processed.replaceAll("&BASS_INDEX&", bassIndex);
         }
 
-        //Replace Arpeggiator
+        // Replace Arpeggiator
         if (processed.includes("&ARP_PLAYED&")) {
             processed = processed.replaceAll("&ARP_PLAYED&", arpeggiator);
         }
@@ -100,7 +104,7 @@ export default function StrudelDemo() {
             }
         );
 
-        // Multiply hardcoded .gain(NUM) and .postgain(NUM), but skip pick(gain_patterns,...)
+        // Multiply hardcoded .gain(NUM)
         processed = processed.replace(/\.gain\(([\d.]+)\)/g, (match, num) => {
             return match.includes("pick(gain_patterns") ? match : `.gain(${parseFloat(num) * volumeMultiplier})`;
         });
@@ -108,7 +112,7 @@ export default function StrudelDemo() {
         return processed;
     }, [songText, checkedInstruments, CPS, volumeMultiplier, patternIndex, bassIndex, arpeggiator]);
 
-
+    // Function to set the REPL to the processed track
     const handleProcess = useCallback(() => {
         if (globalEditor) {
             const processedText = processSongText();
@@ -116,6 +120,7 @@ export default function StrudelDemo() {
         }
     }, [processSongText]);
 
+    // Function that preprocesses and plays after using only a single buttton
     const processAndPlay = useCallback(() => {
         handleProcess();
         handlePlay();
