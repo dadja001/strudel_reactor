@@ -1,20 +1,29 @@
 import { useRef, useState, useEffect } from "react";
+
+// Controls section for CPS, volume, and music parameters
 function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPatternChange, bass, onBassChange, arp, onArpChange }) {
     const initialCPS = useRef(CPS);
     const [inputValue, setInputValue] = useState(CPS);
 
+    // Handle CPS input with validation
     const handleCPSChange = e => {
         const val = e.target.value;
         setInputValue(val);
 
         const num = parseInt(val, 10);
-        if (!isNaN(num)) onChange(num);
+        if (!isNaN(num) && num >= e.target.min && num <= e.target.max) {
+            onChange(num);
+        } else {
+            alert("Minimum is 0, and Maximum is 400. Please enter a valid value within these parameters.");
+        }
     };
 
+    // Sync input value when CPS changes externally
     useEffect(() => {
         setInputValue(CPS.toString());
     }, [CPS]);
 
+    // Reset CPS to initial value
     const reset = () => {
         setInputValue(initialCPS.current);
         onChange(initialCPS.current);
@@ -24,7 +33,7 @@ function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPat
         const val = parseFloat(e.target.value);
         onVolumeChange(val);
     };
-    
+
     const handlePatternChange = e => {
         const index = parseInt(e.target.value, 10);
         onPatternChange(index);
@@ -42,13 +51,16 @@ function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPat
 
     return (
         <>
+            {/* CPS Control */}
             <div className="mb-3">
                 <div className="input-group">
                     <span className="input-group-text" id="cps_label">Set CPS</span>
                     <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         value={inputValue}
+                        min="0"
+                        max="400"
                         placeholder="CPS (cycles per second) e.g. 140"
                         onChange={handleCPSChange}
                     />
@@ -60,6 +72,7 @@ function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPat
                 </div>
             </div>
 
+            {/* Volume Control */}
             <div className="mb-3">
                 <label htmlFor="volume_range" className="form-label">
                     Volume: {(volume * 100).toFixed(0)}%{volume === 0 ? " (MUTED)" : ""}
@@ -80,6 +93,7 @@ function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPat
                 </div>
             </div>
 
+            {/* Pattern, Arpeggiator, and Bass Complexity Controls */}
             <div className="mb-3 d-flex justify-content-between align-items-start">
                 <div>
                     <h6>Pattern Complexity</h6>

@@ -10,28 +10,57 @@ import { stranger_tune } from './tunes';
 import console_monkey_patch from './console-monkey-patch';
 
 import { processSongText } from "./utils/preprocess";
+import { exportSettings, importSettings } from "./utils/settings";
+
 import PreprocessTextArea from './components/PreprocessTextArea';
 import ProcessButtons from './components/ProcessButtons';
 import PlayButtonsGroup from './components/PlayButtonsGroup';
 import ControlsSection from './components/ControlsSection';
 import InstrumentToggles from './components/InstrumentToggles';
+import SettingsButtons from './components/SettingsButtons';
+import GainGraph from './components/D3Graph';
 
+// Global reference to the Strudel editor instance
 let globalEditor = null;
-
-const handleD3Data = (event) => {
-    console.log(event.detail);
-};
 
 export default function StrudelDemo() {
     const hasRun = useRef(false);
+    const [d3Data, setD3Data] = useState([]);
 
-    // Initial/default values
-    const initialCPS = 140
-    const initialPatternIndex = 0
-    const initialBassIndex = 0
-    const initialArpeggiator = "arpeggiator1"
+    // Handle incoming D3 data from custom events
+    const handleD3Data = (event) => {
+        const recentLogs = event.detail.slice(-50);
 
-    // States
+        const parsed = recentLogs.map(line => {
+            const gainMatch = line.match(/gain:([0-9.]+)/);
+            return {
+                raw: line,
+                gain: gainMatch ? parseFloat(gainMatch[1]) : 0
+            };
+        });
+
+        setD3Data(parsed);
+    };
+
+    // Available synthesizer sounds
+    const soundOptions = [
+        "supersaw",
+        "sine",
+        "square",
+        "triangle",
+        "pulse",
+        "organ",
+        "piano",
+    ];
+
+    // Default values for controls
+    const initialCPS = 140;
+    const initialPatternIndex = 0;
+    const initialBassIndex = 0;
+    const initialArpeggiator = "arpeggiator1";
+    const initialSound = "supersaw";
+
+    // State management for all controls
     const [songText, setSongText] = useState(stranger_tune);
     const [checkedInstruments, setCheckedInstruments] = useState({
         bassline: true,
@@ -44,18 +73,20 @@ export default function StrudelDemo() {
     const [patternIndex, setPatternIndex] = useState(initialPatternIndex);
     const [bassIndex, setBassIndex] = useState(initialBassIndex);
     const [arpeggiator, setArpeggiator] = useState(initialArpeggiator);
+    const [basslineSound, setBasslineSound] = useState(initialSound);
+    const [arpSound, setArpSound] = useState(initialSound);
 
-    // Starts the REPL
+    // Play the current code in the Strudel editor
     const handlePlay = useCallback(() => {
         if (globalEditor) globalEditor.evaluate();
     }, []);
 
-    // Stops the REPL
+    // Stop playback
     const handleStop = useCallback(() => {
         if (globalEditor) globalEditor.stop();
     }, []);
 
-    // Save instruments enabled boolean 
+    // Toggle individual instruments on/off
     const handleInstrumentChange = useCallback((instrument, checked) => {
         setCheckedInstruments(prev => ({
             ...prev,
@@ -63,7 +94,7 @@ export default function StrudelDemo() {
         }));
     }, []);
 
-    // Function to run the preprocessing function
+    // Run preprocessing with current settings
     const runPreprocessing = useCallback(() => {
         return processSongText(
             songText,
@@ -72,11 +103,13 @@ export default function StrudelDemo() {
             volumeMultiplier,
             patternIndex,
             bassIndex,
-            arpeggiator
+            arpeggiator,
+            basslineSound,
+            arpSound
         );
-    }, [songText, checkedInstruments, CPS, volumeMultiplier, patternIndex, bassIndex, arpeggiator]);
+    }, [songText, checkedInstruments, CPS, volumeMultiplier, patternIndex, bassIndex, arpeggiator, basslineSound, arpSound]);
 
-    // Function to set the REPL to the processed track
+    // Preprocess and update the editor code
     const handleProcess = useCallback(() => {
         if (globalEditor) {
             const processedText = runPreprocessing();
@@ -84,23 +117,64 @@ export default function StrudelDemo() {
         }
     }, [runPreprocessing]);
 
-    // Function that preprocesses and plays after using only a single buttton
+    // Preprocess and immediately play
     const processAndPlay = useCallback(() => {
         handleProcess();
         handlePlay();
     }, [handleProcess, handlePlay]);
 
+    // Gather all settings for export/import
+    const settings = {
+        CPS,
+        volume: volumeMultiplier,
+        pattern: patternIndex,
+        bass: bassIndex,
+        arp: arpeggiator,
+        bassSound: basslineSound,
+        arpSound: arpSound,
+        checkedInstruments,
+    };
+
+    // Export settings to JSON file
+    const handleExportSettings = () => {
+        exportSettings(settings);
+        alert("Settings exported successfully!");
+    };
+
+    // Import settings from JSON file
+    const handleImportSettings = async (event) => {
+        try {
+            const loaded = await importSettings(event);
+            if (loaded.CPS !== undefined) setCPS(loaded.CPS);
+            if (loaded.volume !== undefined) setVolumeMultiplier(loaded.volume);
+            if (loaded.pattern !== undefined) setPatternIndex(loaded.pattern);
+            if (loaded.bass !== undefined) setBassIndex(loaded.bass);
+            if (loaded.arp !== undefined) setArpeggiator(loaded.arp);
+            if (loaded.bassSound !== undefined) setBasslineSound(loaded.bassSound);
+            if (loaded.arpSound !== undefined) setArpSound(loaded.arpSound);
+            if (loaded.checkedInstruments) setCheckedInstruments(loaded.checkedInstruments);
+
+            alert("Settings imported successfully!");
+        } catch (err) {
+            console.error(err);
+            alert("Invalid settings file.");
+        }
+    };
+
+    // Initialize Strudel editor on first render
     useEffect(() => {
         if (!hasRun.current) {
             document.addEventListener("d3Data", handleD3Data);
             console_monkey_patch();
 
+            // Setup canvas for piano roll visualization
             const canvas = document.getElementById('roll');
             canvas.width = canvas.width * 2;
             canvas.height = canvas.height * 2;
             const drawContext = canvas.getContext('2d');
             const drawTime = [-2, 2];
 
+            // Initialize the Strudel editor
             globalEditor = new StrudelMirror({
                 defaultOutput: webaudioOutput,
                 getTime: () => getAudioContext().currentTime,
@@ -124,6 +198,7 @@ export default function StrudelDemo() {
             hasRun.current = true;
         }
 
+        // Update editor when songText changes
         if (globalEditor) {
             globalEditor.setCode(songText);
         }
@@ -131,37 +206,66 @@ export default function StrudelDemo() {
 
     return (
         <div>
-            <h2 className="text-center mt-2">Audio Preprocessor and Player</h2>
+            <div className="position-relative mt-2 mb-3">
+                <h2 className="text-center">Audio Preprocessor and Player</h2>
+                <SettingsButtons exportSettings={handleExportSettings} importSettings={handleImportSettings} />
+            </div>
+
             <hr />
+
             <main>
                 <div className="container-fluid">
+
+                    {/* PROCESS + PLAY */}
                     <div className="row mb-3">
                         <div className="col-3">
                             <h3 className="text-center">Process</h3>
-                            <ProcessButtons handleProcess={handleProcess} processAndPlay={processAndPlay} />
+                            <ProcessButtons
+                                handleProcess={handleProcess}
+                                processAndPlay={processAndPlay}
+                            />
+
                             <h3 className="text-center mt-3">Play</h3>
                             <PlayButtonsGroup onPlay={handlePlay} onStop={handleStop} />
                         </div>
+
                         <div className="col-5">
                             <h3 className="text-center">Controls</h3>
-                            <ControlsSection CPS={CPS} onChange={setCPS}
+                            <ControlsSection
+                                CPS={CPS} onChange={setCPS}
                                 volume={volumeMultiplier} onVolumeChange={setVolumeMultiplier}
                                 pattern={patternIndex} onPatternChange={setPatternIndex}
                                 bass={bassIndex} onBassChange={setBassIndex}
                                 arp={arpeggiator} onArpChange={setArpeggiator}
                             />
                         </div>
+
                         <div className="col-4">
                             <h3 className="text-center">Toggle Instruments</h3>
-                            <InstrumentToggles checkedInstruments={checkedInstruments} onChange={handleInstrumentChange} />
+                            <InstrumentToggles
+                                checkedInstruments={checkedInstruments} onChange={handleInstrumentChange}
+                                bassSound={basslineSound} onBassSoundChange={setBasslineSound}
+                                arpSound={arpSound} onArpSoundChange={setArpSound}
+                                soundOptions={soundOptions}
+                            />
                         </div>
                     </div>
 
+                    {/* D3 GRAPH */}
+                    <div className="border border-primary m-3">
+                        <GainGraph data={d3Data} />
+                    </div>
+
+                    {/* TEXT AREA + REPL */}
                     <div className="row">
                         <div className="col-6">
                             <h3 className="text-center">Preprocess Editable Area</h3>
-                            <PreprocessTextArea defaultValue={songText} onChange={e => setSongText(e.target.value)} />
+                            <PreprocessTextArea
+                                defaultValue={songText}
+                                onChange={e => setSongText(e.target.value)}
+                            />
                         </div>
+
                         <div className="col-6">
                             <h3 className="text-center">Strudel REPL</h3>
                             <div style={{ maxHeight: '50vh', overflowY: 'auto' }}>

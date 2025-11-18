@@ -41,7 +41,7 @@ const bass = &BASS_INDEX&
 
 &BASSLINE&bassline:
 note(pick(basslines, bass))
-.sound("supersaw")
+.sound("&BASS_SOUND&")
 .postgain(2)
 .room(0.6)
 .lpf(700)
@@ -51,7 +51,7 @@ note(pick(basslines, bass))
 
 &MAIN_ARP&main_arp:
 note(pick(&ARP_PLAYED&, "<0 1 2 3>/2"))
-.sound("supersaw")
+.sound("&ARP_SOUND&")
 .lpf(300)
 .adsr("0:0:.5:.1")
 .room(0.6)
@@ -65,7 +65,7 @@ stack(
   .postgain(6)
   .pcurve(2)
   .pdec(1)
-  .struct(pick(drum_structure, pattern)),
+  .struct(pick(drum_structure, pattern)),gain(1),
 
   s("sh").struct("[x!3 ~!2 x!10 ~]")
   .postgain(0.5).lpf(7000)
@@ -74,7 +74,7 @@ stack(
 
   s("{~ ~ rim ~ cp ~ rim cp ~!2 rim ~ cp ~ < rim ~ >!2}%8 *2")
   .bank("[KorgDDM110, OberheimDmx]").speed(1.2)
-  .postgain(.25),
+  .postgain(.25).gain(1),
 )
 
 &DRUMS2&drums2:
