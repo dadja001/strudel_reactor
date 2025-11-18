@@ -28,8 +28,7 @@ export default function StrudelDemo() {
     const [d3Data, setD3Data] = useState([]);
 
     const handleD3Data = (event) => {
-        // take last 50 entries to avoid excessive speed/repetition
-        const recentLogs = event.detail.slice(-50);
+        const recentLogs = event.detail.slice(-80);
 
         const parsed = recentLogs.map(line => {
             const gainMatch = line.match(/gain:([0-9.]+)/);
