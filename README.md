@@ -7,6 +7,9 @@ A React-based music application that uses Strudel (a live coding music environme
 - **Browser Focus Required**: The song may lag or stop playing when the browser tab or window is not focused. This is due to browser performance throttling of background tabs.
 - **Refresh May Be Needed**: If playback becomes unresponsive or behaves unexpectedly, try refreshing or reloading the page to reset the audio context.
 
+## Video
+[View Video](https://youtu.be/xb-T_XKpUIk)
+
 ---
 
 ## Controls Overview
