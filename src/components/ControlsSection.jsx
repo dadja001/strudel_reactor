@@ -8,7 +8,11 @@ function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPat
         setInputValue(val);
 
         const num = parseInt(val, 10);
-        if (!isNaN(num)) onChange(num);
+        if (!isNaN(num) && num >= e.target.min && num <= e.target.max) {
+            onChange(num);
+        } else {
+            alert("Minimum is 0, and Maximum is 400. Please enter a valid value within these parameters.");
+        }
     };
 
     useEffect(() => {
@@ -46,9 +50,11 @@ function ControlsSection({ CPS, onChange, volume, onVolumeChange, pattern, onPat
                 <div className="input-group">
                     <span className="input-group-text" id="cps_label">Set CPS</span>
                     <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         value={inputValue}
+                        min="0"
+                        max="400"
                         placeholder="CPS (cycles per second) e.g. 140"
                         onChange={handleCPSChange}
                     />

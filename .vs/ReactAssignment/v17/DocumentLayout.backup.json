@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\components\\processbuttons.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\components\\processbuttons.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\components\\instrumenttoggles.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\components\\instrumenttoggles.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\components\\controlssection.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\components\\controlssection.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\components\\preprocesstextarea.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\components\\preprocesstextarea.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\utils\\preprocess.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\utils\\preprocess.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\components\\playbuttonsgroup.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\components\\playbuttonsgroup.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\joshua dadswell\\source\\repos\\strudel_reactor\\src\\tunes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -39,24 +63,103 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "InstrumentToggles.jsx",
+              "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\InstrumentToggles.jsx",
+              "RelativeDocumentMoniker": "src\\components\\InstrumentToggles.jsx",
+              "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\InstrumentToggles.jsx",
+              "RelativeToolTip": "src\\components\\InstrumentToggles.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-06T04:08:55.77Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProcessButtons.jsx",
+              "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\ProcessButtons.jsx",
+              "RelativeDocumentMoniker": "src\\components\\ProcessButtons.jsx",
+              "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\ProcessButtons.jsx",
+              "RelativeToolTip": "src\\components\\ProcessButtons.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-06T03:34:12.927Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PreprocessTextArea.jsx",
+              "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\PreprocessTextArea.jsx",
+              "RelativeDocumentMoniker": "src\\components\\PreprocessTextArea.jsx",
+              "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\PreprocessTextArea.jsx",
+              "RelativeToolTip": "src\\components\\PreprocessTextArea.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-06T03:34:10.993Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "preprocess.jsx",
+              "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\utils\\preprocess.jsx",
+              "RelativeDocumentMoniker": "src\\utils\\preprocess.jsx",
+              "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\utils\\preprocess.jsx",
+              "RelativeToolTip": "src\\utils\\preprocess.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-06T03:20:57.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PlayButtonsGroup.jsx",
+              "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\PlayButtonsGroup.jsx",
+              "RelativeDocumentMoniker": "src\\components\\PlayButtonsGroup.jsx",
+              "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\PlayButtonsGroup.jsx",
+              "RelativeToolTip": "src\\components\\PlayButtonsGroup.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAQAAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-06T02:54:30.693Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "tunes.js",
               "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\tunes.js",
               "RelativeDocumentMoniker": "src\\tunes.js",
               "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\tunes.js",
               "RelativeToolTip": "src\\tunes.js",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACkAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADQAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-03T10:38:49.982Z"
+              "WhenOpened": "2025-11-05T09:39:20.834Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "ControlsSection.jsx",
+              "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\ControlsSection.jsx",
+              "RelativeDocumentMoniker": "src\\components\\ControlsSection.jsx",
+              "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\components\\ControlsSection.jsx",
+              "RelativeToolTip": "src\\components\\ControlsSection.jsx",
+              "ViewState": "AgIAACwAAAAAAAAAAAAQwDEAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-05T09:16:02.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "App.js",
               "DocumentMoniker": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\App.js",
               "RelativeDocumentMoniker": "src\\App.js",
               "ToolTip": "C:\\Users\\Joshua Dadswell\\source\\repos\\strudel_reactor\\src\\App.js",
               "RelativeToolTip": "src\\App.js",
-              "ViewState": "AgIAAI8AAAAAAAAAAAAqwLQAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-10-31T02:35:34.644Z",
               "EditorCaption": ""

@@ -5,7 +5,9 @@ export const processSongText = (
     volumeMultiplier,
     patternIndex,
     bassIndex,
-    arpeggiator
+    arpeggiator,
+    basslineSound,
+    arpSound
 ) => {
     let processed = songText;
 
@@ -34,6 +36,14 @@ export const processSongText = (
     // Replace Arpeggiator
     if (processed.includes("&ARP_PLAYED&")) {
         processed = processed.replaceAll("&ARP_PLAYED&", arpeggiator);
+    }
+
+    // Replace Sounds
+    if (processed.includes("&BASS_SOUND&")) {
+        processed = processed.replaceAll("&BASS_SOUND&", basslineSound);
+    }
+    if (processed.includes("&ARP_SOUND&")) {
+        processed = processed.replaceAll("&ARP_SOUND&", arpSound);
     }
 
     // Multiply gain_patterns numbers
