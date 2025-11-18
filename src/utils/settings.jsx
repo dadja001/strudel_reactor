@@ -1,3 +1,4 @@
+// Export settings object as a downloadable JSON file
 export function exportSettings(settings) {
     const blob = new Blob([JSON.stringify(settings, null, 2)], {
         type: "application/json"
@@ -12,6 +13,7 @@ export function exportSettings(settings) {
     URL.revokeObjectURL(url);
 }
 
+// Import settings from a JSON file upload
 export function importSettings(event) {
     return new Promise((resolve, reject) => {
         const file = event.target.files[0];
@@ -21,7 +23,7 @@ export function importSettings(event) {
         reader.onload = (e) => {
             try {
                 const loaded = JSON.parse(e.target.result);
-                resolve(loaded); // resolve the loaded settings
+                resolve(loaded);
             } catch (err) {
                 reject(err);
             }

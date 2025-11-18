@@ -20,15 +20,16 @@ import InstrumentToggles from './components/InstrumentToggles';
 import SettingsButtons from './components/SettingsButtons';
 import GainGraph from './components/D3Graph';
 
+// Global reference to the Strudel editor instance
 let globalEditor = null;
 
 export default function StrudelDemo() {
     const hasRun = useRef(false);
-
     const [d3Data, setD3Data] = useState([]);
 
+    // Handle incoming D3 data from custom events
     const handleD3Data = (event) => {
-        const recentLogs = event.detail.slice(-80);
+        const recentLogs = event.detail.slice(-50);
 
         const parsed = recentLogs.map(line => {
             const gainMatch = line.match(/gain:([0-9.]+)/);
@@ -41,6 +42,7 @@ export default function StrudelDemo() {
         setD3Data(parsed);
     };
 
+    // Available synthesizer sounds
     const soundOptions = [
         "supersaw",
         "sine",
@@ -51,14 +53,14 @@ export default function StrudelDemo() {
         "piano",
     ];
 
-    // Initial/default values
+    // Default values for controls
     const initialCPS = 140;
     const initialPatternIndex = 0;
     const initialBassIndex = 0;
     const initialArpeggiator = "arpeggiator1";
     const initialSound = "supersaw";
 
-    // States
+    // State management for all controls
     const [songText, setSongText] = useState(stranger_tune);
     const [checkedInstruments, setCheckedInstruments] = useState({
         bassline: true,
@@ -74,16 +76,17 @@ export default function StrudelDemo() {
     const [basslineSound, setBasslineSound] = useState(initialSound);
     const [arpSound, setArpSound] = useState(initialSound);
 
-    // Starts the REPL
+    // Play the current code in the Strudel editor
     const handlePlay = useCallback(() => {
         if (globalEditor) globalEditor.evaluate();
     }, []);
 
-    // Stops the REPL
+    // Stop playback
     const handleStop = useCallback(() => {
         if (globalEditor) globalEditor.stop();
     }, []);
 
+    // Toggle individual instruments on/off
     const handleInstrumentChange = useCallback((instrument, checked) => {
         setCheckedInstruments(prev => ({
             ...prev,
@@ -91,6 +94,7 @@ export default function StrudelDemo() {
         }));
     }, []);
 
+    // Run preprocessing with current settings
     const runPreprocessing = useCallback(() => {
         return processSongText(
             songText,
@@ -105,6 +109,7 @@ export default function StrudelDemo() {
         );
     }, [songText, checkedInstruments, CPS, volumeMultiplier, patternIndex, bassIndex, arpeggiator, basslineSound, arpSound]);
 
+    // Preprocess and update the editor code
     const handleProcess = useCallback(() => {
         if (globalEditor) {
             const processedText = runPreprocessing();
@@ -112,11 +117,13 @@ export default function StrudelDemo() {
         }
     }, [runPreprocessing]);
 
+    // Preprocess and immediately play
     const processAndPlay = useCallback(() => {
         handleProcess();
         handlePlay();
     }, [handleProcess, handlePlay]);
 
+    // Gather all settings for export/import
     const settings = {
         CPS,
         volume: volumeMultiplier,
@@ -128,13 +135,13 @@ export default function StrudelDemo() {
         checkedInstruments,
     };
 
-    // Wrap export and alert
+    // Export settings to JSON file
     const handleExportSettings = () => {
         exportSettings(settings);
         alert("Settings exported successfully!");
     };
 
-    // Wrap import to update state and alert
+    // Import settings from JSON file
     const handleImportSettings = async (event) => {
         try {
             const loaded = await importSettings(event);
@@ -154,17 +161,20 @@ export default function StrudelDemo() {
         }
     };
 
+    // Initialize Strudel editor on first render
     useEffect(() => {
         if (!hasRun.current) {
             document.addEventListener("d3Data", handleD3Data);
             console_monkey_patch();
 
+            // Setup canvas for piano roll visualization
             const canvas = document.getElementById('roll');
             canvas.width = canvas.width * 2;
             canvas.height = canvas.height * 2;
             const drawContext = canvas.getContext('2d');
             const drawTime = [-2, 2];
 
+            // Initialize the Strudel editor
             globalEditor = new StrudelMirror({
                 defaultOutput: webaudioOutput,
                 getTime: () => getAudioContext().currentTime,
@@ -188,6 +198,7 @@ export default function StrudelDemo() {
             hasRun.current = true;
         }
 
+        // Update editor when songText changes
         if (globalEditor) {
             globalEditor.setCode(songText);
         }

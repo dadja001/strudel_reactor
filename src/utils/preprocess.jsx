@@ -1,3 +1,4 @@
+// Processes song text by replacing placeholders with actual values
 export const processSongText = (
     songText,
     checkedInstruments,
@@ -11,34 +12,34 @@ export const processSongText = (
 ) => {
     let processed = songText;
 
-    // Replace instrument placeholders
+    // Replace instrument placeholders with "_" (off) or "" (on)
     for (const [instrument, isChecked] of Object.entries(checkedInstruments)) {
         const placeholder = `&${instrument.toUpperCase()}&`;
         const replacement = isChecked ? "" : "_"; // unchecked = "_", checked = ""
         processed = processed.replaceAll(placeholder, replacement);
     }
 
-    // Replace CPS
+    // Replace CPS (cycles per second / tempo)
     if (processed.includes("&CPS&")) {
         processed = processed.replaceAll("&CPS&", CPS);
     }
 
-    // Replace Pattern
+    // Replace pattern complexity index
     if (processed.includes("&PATTERN_INDEX&")) {
         processed = processed.replaceAll("&PATTERN_INDEX&", patternIndex);
     }
 
-    // Replace Bass
+    // Replace bass complexity index
     if (processed.includes("&BASS_INDEX&")) {
         processed = processed.replaceAll("&BASS_INDEX&", bassIndex);
     }
 
-    // Replace Arpeggiator
+    // Replace arpeggiator selection
     if (processed.includes("&ARP_PLAYED&")) {
         processed = processed.replaceAll("&ARP_PLAYED&", arpeggiator);
     }
 
-    // Replace Sounds
+    // Replace sound selections
     if (processed.includes("&BASS_SOUND&")) {
         processed = processed.replaceAll("&BASS_SOUND&", basslineSound);
     }
@@ -46,7 +47,7 @@ export const processSongText = (
         processed = processed.replaceAll("&ARP_SOUND&", arpSound);
     }
 
-    // Multiply gain_patterns numbers
+    // Multiply all numbers in the gain_patterns array by volume multiplier
     processed = processed.replace(
         /const\s+gain_patterns\s*=\s*\[([\s\S]*?)\]/,
         (match, content) => {
@@ -57,7 +58,7 @@ export const processSongText = (
         }
     );
 
-    // Multiply hardcoded .gain(NUM)
+    // Multiply hardcoded .gain() values (except those using pick(gain_patterns))
     processed = processed.replace(/\.gain\(([\d.]+)\)/g, (match, num) => {
         return match.includes("pick(gain_patterns")
             ? match

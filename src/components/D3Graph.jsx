@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
+// D3 bar chart displaying gain/volume waveform
 export default function GainGraph({ data }) {
     const svgRef = useRef();
-    const maxBars = 50;
+    const maxBars = 50; // Maximum number of bars to display
     const margin = { top: 40, right: 20, bottom: 30, left: 40 };
     const height = 300;
 
@@ -13,7 +14,7 @@ export default function GainGraph({ data }) {
         const innerWidth = width - margin.left - margin.right;
         const innerHeight = height - margin.top - margin.bottom;
 
-        // Create main group only once
+        // Create main group and title only once
         let g = svg.select("g");
         if (g.empty()) {
             svg.selectAll("*").remove();
@@ -22,7 +23,7 @@ export default function GainGraph({ data }) {
             // Y-axis group
             g.append("g").attr("class", "y-axis");
 
-            // Title
+            // Chart title
             svg.append("text")
                 .attr("class", "title")
                 .attr("x", width / 2)
@@ -33,16 +34,18 @@ export default function GainGraph({ data }) {
                 .text("Song Waveform/Gain");
         }
 
-        // Scales
+        // Show only the most recent bars
         const displayedData = data.slice(-maxBars);
+
+        // X scale for bar positioning
         const xScale = d3
             .scaleBand()
             .domain(d3.range(displayedData.length))
             .range([0, innerWidth])
             .padding(0.1);
 
+        // Y scale for bar height
         const maxGain = d3.max(displayedData, d => d.gain) || 1;
-
         const yScale = d3
             .scaleLinear()
             .domain([0, maxGain])
@@ -51,13 +54,13 @@ export default function GainGraph({ data }) {
         // Update Y-axis
         g.select(".y-axis").call(d3.axisLeft(yScale).ticks(5));
 
-        // Bind bars
+        // Bind data to bars
         const bars = g.selectAll("rect").data(displayedData, (_, i) => i);
 
-        // Exit old bars
+        // Remove old bars
         bars.exit().remove();
 
-        // Enter new bars
+        // Add new bars with animation
         bars.enter()
             .append("rect")
             .attr("x", (_, i) => xScale(i))
@@ -65,7 +68,7 @@ export default function GainGraph({ data }) {
             .attr("y", innerHeight)
             .attr("height", 0)
             .attr("fill", "#000099")
-            .merge(bars)
+            .merge(bars) // Merge with existing bars
             .transition()
             .duration(300)
             .attr("x", (_, i) => xScale(i))

@@ -1,70 +1,148 @@
-# Getting Started with Create React App
+# Audio Preprocessor and Player
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based music application that uses Strudel (a live coding music environment) to preprocess and play audio patterns with customizable instruments and parameters.
 
-## Available Scripts
+## Important Notes
 
-In the project directory, you can run:
+- **Browser Focus Required**: The song may lag or stop playing when the browser tab or window is not focused. This is due to browser performance throttling of background tabs.
+- **Refresh May Be Needed**: If playback becomes unresponsive or behaves unexpectedly, try refreshing or reloading the page to reset the audio context.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Controls Overview
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Settings Buttons (Top Right)
 
-### `npm test`
+#### Export Settings
+- **Purpose**: Downloads your current configuration as a JSON file
+- **What it saves**: CPS, volume, pattern complexity, bass complexity, arpeggiator selection, sound choices, and instrument toggles
+- **Use case**: Save your favorite configurations to load later or share with others
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Import Settings
+- **Purpose**: Loads a previously saved settings JSON file
+- **How to use**: Click the button, select a `settings.json` file from your computer
+- **Effect**: Instantly applies all saved settings to the application
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Process Buttons
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Preprocess
+- **Purpose**: Processes the raw song text and updates the Strudel REPL editor
+- **What it does**: Replaces all placeholders (like `&CPS&`, `&BASS_SOUND&`, etc.) with your selected values
+- **When to use**: After making changes to controls or the text area, before playing
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Process & Play
+- **Purpose**: Combines preprocessing and playback in one action
+- **What it does**: First preprocesses the song text, then immediately starts playing
+- **When to use**: Quick workflow to hear your changes instantly
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Play Buttons
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Play
+- **Purpose**: Starts playback of the current code in the Strudel REPL
+- **Note**: Only plays whatever is currently in the REPL editor (you may need to preprocess first)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Stop
+- **Purpose**: Stops all audio playback immediately
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+### Controls Section
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Set CPS (Cycles Per Second)
+- **Range**: 0-400
+- **Default**: 140
+- **Purpose**: Controls the tempo/speed of the music
+- **Effect**: Higher values = faster tempo, lower values = slower tempo
+- **Reset Button**: Returns CPS to the default value of 140
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Volume
+- **Range**: 0% - 200%
+- **Default**: 100%
+- **Purpose**: Adjusts the overall volume/gain of all instruments
+- **Effect**: Multiplies all gain values in the song
+- **Note**: 0% mutes all audio, 200% doubles the volume
 
-### Code Splitting
+#### Pattern Complexity
+- **Options**: Simple / Moderate / Complex
+- **Purpose**: Selects different melodic pattern variations
+- **Effect**: Changes the `&PATTERN_INDEX&` placeholder (0, 1, or 2)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### Arpeggiator
+- **Options**: 1 / 2
+- **Purpose**: Switches between two different arpeggiator patterns
+- **Effect**: Changes the `&ARP_PLAYED&` placeholder (arpeggiator1 or arpeggiator2)
 
-### Analyzing the Bundle Size
+#### Bassline Complexity
+- **Options**: Simple / Complex
+- **Purpose**: Chooses between two bassline pattern variations
+- **Effect**: Changes the `&BASS_INDEX&` placeholder (0 or 1)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### Toggle Instruments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### Instrument Checkboxes
+- **Available Instruments**: bassline, main_arp, drums, drums2
+- **Purpose**: Enable or disable individual instruments in the mix
+- **Effect**: 
+  - Checked = instrument plays (placeholder replaced with empty string)
+  - Unchecked = instrument is silenced (placeholder replaced with `_`)
 
-### Advanced Configuration
+#### Bassline Sound
+- **Options**: supersaw, sine, square, triangle, pulse, organ, piano
+- **Purpose**: Selects the synthesizer sound for the bassline
+- **Effect**: Changes the `&BASS_SOUND&` placeholder
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### Arp Sound
+- **Options**: supersaw, sine, square, triangle, pulse, organ, piano
+- **Purpose**: Selects the synthesizer sound for the arpeggiator
+- **Effect**: Changes the `&ARP_SOUND&` placeholder
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Waveform Graph
 
-### `npm run build` fails to minify
+- **Purpose**: Visual representation of the song's gain/volume over time
+- **Display**: Shows the most recent 50 bars of audio data
+- **Updates**: Real-time as the song plays
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+### Text Areas
+
+#### Preprocess Editable Area (Left)
+- **Purpose**: Raw song code with placeholders that you can edit
+- **Placeholders**: Special markers like `&CPS&`, `&BASS_SOUND&`, `&BASSLINE&`, etc.
+- **Editing**: You can modify the code structure, add patterns, or change sequences
+- **Note**: Changes here require preprocessing before they take effect
+
+#### Strudel REPL (Right)
+- **Purpose**: The actual code that gets executed by Strudel
+- **Content**: Shows the processed version after placeholders are replaced
+- **Auto-generated**: Automatically updated when you click "Preprocess" or "Process & Play"
+- **Note**: This is what actually plays when you hit the Play button
+
+---
+
+## Typical Workflow
+
+1. **Adjust Controls**: Set your desired CPS, volume, pattern complexity, etc.
+2. **Toggle Instruments**: Enable/disable instruments as desired
+3. **Select Sounds**: Choose synth sounds for bass and arp
+4. **Edit Text** (optional): Modify the raw song code if desired
+5. **Process & Play**: Click to preprocess and start playback
+6. **Stop**: Click Stop when finished
+7. **Save Settings** (optional): Export your configuration for later use
+
+---
+
+## Troubleshooting
+
+- **No Sound**: Check that volume is not at 0% and at least one instrument is enabled
+- **Playback Stops**: Bring the browser tab back into focus; consider refreshing the page
+- **Changes Not Heard**: Make sure to click "Preprocess" or "Process & Play" after making changes
+- **Invalid CPS Error**: Ensure CPS value is between 0 and 400
